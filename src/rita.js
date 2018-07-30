@@ -4893,11 +4893,11 @@ RiTa.stemmers.Pling = (function() {
 
   // Note that a word can be both plural and singular
   function isSingular(s) {
-    return (categorySP._arrayContains(s.toLowerCase()) || !isPlural(s));
+    return (categorySP.includes(s.toLowerCase()) || !isPlural(s));
   }
 
   function isSingularAndPlural(s) {
-    return (categorySP._arrayContains(s.toLowerCase()));
+    return (categorySP.includes(s.toLowerCase()));
   }
 
   // Cuts a suffix from a string (that is the number of chars given by the
@@ -4918,7 +4918,7 @@ RiTa.stemmers.Pling = (function() {
   function stem(s) {
 
     // Handle irregular ones
-    if (categoryIRR._arrayContains(s)) {
+    if (categoryIRR.includes(s)) {
         var index = categoryIRR.indexOf(s),
             irreg;
         if (index % 2 == 0) {
@@ -4927,43 +4927,43 @@ RiTa.stemmers.Pling = (function() {
         }
     }
     // -on to -a
-    if (categoryON_A._arrayContains(s))
+    if (categoryON_A.includes(s))
       return (cut(s, "a") + "on");
 
     // -um to -a
-    if (categoryUM_A._arrayContains(s))
+    if (categoryUM_A.includes(s))
       return (cut(s, "a") + "um");
 
     // -x to -ices
-    if (categoryIX_ICES._arrayContains(s))
+    if (categoryIX_ICES.includes(s))
       return (cut(s, "ices") + "ix");
 
     // -o to -i
-    if (categoryO_I._arrayContains(s))
+    if (categoryO_I.includes(s))
       return (cut(s, "i") + "o");
 
     // -se to ses
-    if (categorySE_SES._arrayContains(s))
+    if (categorySE_SES.includes(s))
       return (cut(s, "s"));
 
     // -is to -es
-    if (categoryIS_ES._arrayContains(s) || s._endsWith("theses"))
+    if (categoryIS_ES.includes(s) || s._endsWith("theses"))
       return (cut(s, "es") + "is");
 
     // -us to -i
-    if (categoryUS_I._arrayContains(s))
+    if (categoryUS_I.includes(s))
       return (cut(s, "i") + "us");
 
     //Wrong plural
-    if (s._endsWith("uses") && (categoryUS_I._arrayContains(cut(s, "uses") + "i") || s === ("genuses") || s === ("corpuses")))
+    if (s._endsWith("uses") && (categoryUS_I.includes(cut(s, "uses") + "i") || s === ("genuses") || s === ("corpuses")))
       return (cut(s, "es"));
 
     // -ex to -ices
-    if (categoryEX_ICES._arrayContains(s))
+    if (categoryEX_ICES.includes(s))
       return (cut(s, "ices") + "ex");
 
     // Words that do not inflect in the plural
-    if (s._endsWith("ois") || s._endsWith("itis") || category00._arrayContains(s) || categoryICS._arrayContains(s))
+    if (s._endsWith("ois") || s._endsWith("itis") || category00.includes(s) || categoryICS.includes(s))
       return (s);
 
     // -en to -ina
@@ -4989,7 +4989,7 @@ RiTa.stemmers.Pling = (function() {
     // -us to -us
     //No other common word ends in -us, except for false plurals of French words
     //Catch words that are not latin or known to end in -u
-    if (s._endsWith("us") && !s._endsWith("eaus") && !s._endsWith("ieus") && !noLatin(s) && !categoryU_US._arrayContains(s))
+    if (s._endsWith("us") && !s._endsWith("eaus") && !s._endsWith("ieus") && !noLatin(s) && !categoryU_US.includes(s))
       return (s);
 
     // -tooth to -teeth
@@ -5037,13 +5037,13 @@ RiTa.stemmers.Pling = (function() {
     // -[sc]h to -[sc]hes
     //No other common word ends with "shes", "ches" or "she(s)"
     //Quite a lot end with "che(s)", filter them out
-    if (s._endsWith("shes") || s._endsWith("ches") && !categoryCHE_CHES._arrayContains(s))
+    if (s._endsWith("shes") || s._endsWith("ches") && !categoryCHE_CHES.includes(s))
       return (cut(s, "es"));
 
     // -ss to -sses
     // No other common singular word ends with "sses"
     // Filter out those ending in "sse(s)"
-    if (s._endsWith("sses") && !categorySSE_SSES._arrayContains(s) && !s._endsWith("mousses"))
+    if (s._endsWith("sses") && !categorySSE_SSES.includes(s) && !s._endsWith("mousses"))
       return (cut(s, "es"));
 
     // -x to -xes
@@ -5065,12 +5065,12 @@ RiTa.stemmers.Pling = (function() {
     // -y to -ies
     // -ies is very uncommon as a singular suffix
     // but -ie is quite common, filter them out
-    if (s._endsWith("ies") && !categoryIE_IES._arrayContains(s))
+    if (s._endsWith("ies") && !categoryIE_IES.includes(s))
       return (cut(s, "ies") + "y");
 
     // -o to -oes
     // Some words end with -oe, so don't kill the "e"
-    if (s._endsWith("oes") && !categoryOE_OES._arrayContains(s))
+    if (s._endsWith("oes") && !categoryOE_OES.includes(s))
       return (cut(s, "es"));
 
     // -s to -ses
@@ -5092,10 +5092,6 @@ RiTa.stemmers.Pling = (function() {
   };
 
 })();
-
-Array.prototype._arrayContains = function(ele) {
-  return (this.indexOf(ele) > -1);
-};
 
 String.prototype._endsWith = function(suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
